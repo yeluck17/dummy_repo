@@ -1,0 +1,22 @@
+name : CREATE S3 bucket
+on : 
+  workflow_dispatch:  #for manual trigger
+    inputs:
+      bucketName:
+        description: "Enter Bucket Name"
+        required: true
+jobs:
+  create-bucket:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v5.1.0
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION}}
+      - name: CREATE S3 Bucket
+        run: |
+          aws s3 mb s3://${{ github.event.inputs.bucketName}}
+
+    
